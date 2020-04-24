@@ -2,38 +2,35 @@
  * @Author: xuhuanhuan(hhxu@robvision) 
  * @Date: 2020-04-22 00:07:52 
  * @Last Modified by: xuhuanhuan(hhxu@robvision.cn)
- * @Last Modified time: 2020-04-24 06:34:16
+ * @Last Modified time: 2020-04-24 23:45:09
  */
-#ifndef __PLCMANAGER_H__
-#define __PLCMANAGER_H__
+#pragma once
 
-//#include "headers/RPCFunc.h"
+//#ifndef __PLCMANAGER_H__
+//#define __PLCMANAGER_H__
 
 #include <string>
 #include <thread>
 #include <mutex>
 #include <vector>
+//#include "../headers/sendComm.h"
+#include <iostream>
+#include <chrono>
 
 #define MAX_DATA 121
 
-class PLCManager{
+class CPLCManager{
     public:
-        static PLCManager* instance();
+        virtual bool sendEnv()=0;
+        virtual bool getEnv()=0;
+        virtual void control(std::string action, std::vector<int> power)=0;
+        virtual ~CPLCManager(){}
+        void sendComm(const std::string protocol, const int* buf, size_t size)
+        {
+            //*向串口写入数据
+            
+        }
 
-        bool sendEnv();
-        bool getEnv();
-        void control(std::string action, std::vector<int> power);
-        void onCfgPowerParams(/*const Json::value config*/ std::vector<std::string> config);
-        ~PLCManager();
-
-    private:
-        PLCManager();
-        void run();
-        void onData();
-
-    private:
-        std::thread t;
-        std::mutex m_dataMutex[MAX_DATA];
-        int m_data[MAX_DATA];
 };
-#endif
+
+//#endif
